@@ -3,37 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desarrollo Web & Servicios Digitales</title>
+  <title>Kaelen Studio | Desarrollo Web & Soluciones Digitales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; max-width: 650px; margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #333; }
-    h1, h2 { color: #111; }
-    .card { background: #f8f9fa; border: 1px solid #e9ecef; padding: 15px; border-radius: 6px; margin: 12px 0; }
-    footer { margin-top: 40px; font-size: 0.9em; color: #666; border-top: 1px solid #ddd; padding-top: 15px; }
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+      --badge-bg: rgba(99, 102, 241, 0.12);
+      --badge-text: #818cf8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+      padding: 0 20px;
+    }
+
+    /* Fondo dinámico con efecto de luz */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0.1) 45%, transparent 70%);
+      filter: blur(80px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 820px;
+      margin: 60px auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: var(--badge-bg);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--badge-text);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 45px 0 20px 0;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Tarjetas de servicios */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.925rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Sección de entrega y términos */
+    .info-panel {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .info-row span.icon {
+      color: var(--badge-text);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .info-row p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* Caja de contacto CTA */
+    .contact-box {
+      margin-top: 45px;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.7) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-box h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .contact-box p {
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 24px auto;
+      font-size: 0.95rem;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 12px 26px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 8px 20px -6px rgba(99, 102, 241, 0.5);
+    }
+
+    .cta-button:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    footer {
+      text-align: center;
+      margin: 50px 0 30px 0;
+      font-size: 0.85rem;
+      color: #64748b;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 20px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
-  <h1>Servicios de Desarrollo Web & Software</h1>
-  <p>Soluciones a medida para negocios, automatización y creación de sitios web modernos y optimizados.</p>
 
-  <h2>Servicios Disponibles</h2>
-  <div class="card">
-    <h3>1. Creación y Diseño de Sitios Web</h3>
-    <p>Landing pages, sitios corporativos y tiendas online optimizadas para móviles y SEO.</p>
+  <div class="container">
+    <header>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Disponible para nuevos proyectos
+      </div>
+      <h1>Desarrollo Web & Automatización</h1>
+      <p class="subtitle">Creación de infraestructura digital moderna, páginas optimizadas y herramientas de integración comercial.</p>
+    </header>
+
+    <h2 class="section-title">Servicios Principales</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <h3>Desarrollo Web & Landing Pages</h3>
+        <p>Sitios web de alta velocidad, responsivos y listos para convertir. Diseñados con enfoque comercial, SEO técnico e integración para cobros.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Scripts & Automatizaciones API</h3>
+        <p>Integración de herramientas, bots a medida y flujos automatizados para sincronizar bases de datos, pasarelas de pago y servicios en la nube.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Mantenimiento & Despliegue</h3>
+        <p>Configuración en servidores VPS, certificados SSL, monitoreo de disponibilidad y actualización periódica de plataformas web.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h3>Integración con Whop / Checkout</h3>
+        <p>Implementación de webhooks, control de membresías y entrega automatizada de accesos tras cada compra confirmada.</p>
+      </div>
+    </div>
+
+    <h2 class="section-title">Términos de Entrega & Soporte</h2>
+    <div class="info-panel">
+      <div class="info-row">
+        <span class="icon">⏱️</span>
+        <p><strong>Plazos de Entrega:</strong> Los proyectos estándar se entregan entre 3 a 7 días hábiles tras la validación de los requerimientos.</p>
+      </div>
+      <div class="info-row">
+        <span class="icon">🔄</span>
+        <p><strong>Garantía y Ajustes:</strong> Incluye 14 días de soporte post-entrega para resolver cualquier inconveniente o realizar ajustes menores sin costo adicional.</p>
+      </div>
+      <div class="info-row">
+        <span class="icon">📄</span>
+        <p><strong>Políticas de Reembolso:</strong> Si el producto digital o desarrollo no cumple las especificaciones acordadas y el fallo no puede ser subsanado, se gestiona el reembolso correspondiente a través de la plataforma.</p>
+      </div>
+    </div>
+
+    <div class="contact-box">
+      <h2>¿Tienes un proyecto o duda con tu orden?</h2>
+      <p>Para consultas técnicas, cotizaciones a medida o soporte referente a pagos en Whop, escribe directamente a nuestro canal oficial.</p>
+      <a href="mailto:notneoalt1@gmail.com" class="cta-button">
+        Contactar por Correo
+      </a>
+    </div>
+
+    <footer>
+      <p>© 2026 DevStudio Digital. Todos los derechos reservados.</p>
+    </footer>
   </div>
-  <div class="card">
-    <h3>2. Automatizaciones y Scripts Personalizados</h3>
-    <p>Desarrollo de bots, integraciones API y herramientas de productividad adaptadas a tu flujo de trabajo.</p>
-  </div>
 
-  <h2>Tiempos de Entrega y Soporte</h2>
-  <p>Los proyectos se entregan en un plazo estimado de 3 a 7 días hábiles según el alcance. Incluye soporte técnico y revisiones directas durante 14 días posteriores a la entrega.</p>
-
-  <h2>Contacto & Soporte al Cliente</h2>
-  <p>Para cotizaciones, soporte o dudas sobre compras en Whop, contáctame en:</p>
-  <p><strong>Email:</strong> notneoalt1@gmail.com</p>
-
-  <footer>
-    <p>© 2026 Estudio de Desarrollo. Todos los derechos reservados.</p>
-  </footer>
 </body>
 </html>
